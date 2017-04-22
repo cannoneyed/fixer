@@ -1,13 +1,12 @@
 {
-  "name": "react-redux-webpack2-boilerplate",
-  "version": "0.1.2",
+  "name": "gutsy",
+  "version": "0.0.1",
   "private": false,
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dashboard -t 'React-Redux Boilerplate' -- webpack-dev-server --colors --no-info",
-    "build": "rm -rf ./build && NODE_ENV=\"production\" webpack",
+    "start": "webpack --progress --colors --watch",
+    "build": "rm -rf ./build && NODE_ENV=\"production\" webpack --progress --colors",
     "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
     "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
     "preview": "NODE_ENV=\"production\" webpack-dashboard -t 'Preview Mode - React-Redux Boilerplate' -- webpack-dev-server",
@@ -40,9 +39,6 @@
     "node-sass": "^3.13.0",
     "postcss-loader": "^1.1.1",
     "prepush": "^3.1.11",
-    "redux-devtools": "^3.3.1",
-    "redux-devtools-dock-monitor": "^1.1.1",
-    "redux-devtools-log-monitor": "^1.1.1",
     "redux-logger": "^2.7.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.0",
@@ -53,9 +49,12 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "bluebird": "^3.5.0",
     "es6-promise": "^3.1.2",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
+    "nightmare": "^2.10.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-redux": "^4.4.0",
@@ -63,21 +62,23 @@
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1"
   },
-  "description": "Starter boilerplate for React and Redux, using Webpack 2",
+  "description": "Generate react component fixtures and unit tests automatically",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Stanko/react-redux-webpack2-boilerplate.git"
+    "url": "git+ssh://git@github.com/cannoneyed/gutsy.git"
   },
   "keywords": [
     "react",
-    "redux",
-    "webpack2",
-    "boilerplate"
+    "testing",
+    "tests",
+    "test"
   ],
-  "author": "Stanko",
+  "author": "cannoneyed",
   "bugs": {
-    "url": "https://github.com/Stanko/react-redux-webpack2-boilerplate/issues"
+    "url": "https://github.com/cannoneyed/gutsy/issues"
   },
-  "homepage": "https://github.com/Stanko/react-redux-webpack2-boilerplate#readme",
-  "prepush" : [ "npm run lint-break-on-errors --silent" ]
+  "homepage": "https://github.com/cannoneyed/gutsy#readme",
+  "prepush": [
+    "npm run lint-break-on-errors --silent"
+  ]
 }
