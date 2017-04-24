@@ -42,6 +42,7 @@ module.exports = {
             'process.env': {
                 NODE_ENV: JSON.stringify(nodeEnv),
             },
+            'global': {}, // mobx workaround
         }),
         new ExtractTextPlugin('styles.css'),
     ],
