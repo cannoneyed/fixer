@@ -1,10 +1,15 @@
-export const getAbsFilePath = (name) => {
-    const rootDirName = __dirname.replace('/lib/script/helpers/', '')
-    console.log('🐸 rootDirName', rootDirName)
+export const getScriptFilePath = (name) => {
+    const rootDirName = __dirname.replace('/helpers', '')
     return `${ rootDirName }/${ name }`
 }
+
+export const getRootFilePath = (name) => {
+    const rootDirName = __dirname.replace('/lib/script/helpers', '')
+    return `${ rootDirName }/${ name }`
+}
+
 export const getInjectPath = (name) => {
-    return getAbsFilePath(`injected/${ name }`)
+    return getRootFilePath(`injected/${ name }`)
 }
 
 export const getNameFromFile = (rootDirName, filename) => {

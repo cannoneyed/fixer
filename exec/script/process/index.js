@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { getAbsFilePath } from '../helpers'
+import { getScriptFilePath } from '../helpers'
 
 export const fnPlaceholder = '__testFixture_method_replace__'
 export const fnString = '() => {}'
@@ -51,7 +51,7 @@ export function processFixture(json, page) {
     return output
 }
 
-const baseTestString = fs.readFileSync(getAbsFilePath('process/base-test.js')).toString()
+const baseTestString = fs.readFileSync(getScriptFilePath('process/base-test.js')).toString()
 export function processTest(name, page) {
     let output = baseTestString
     output = output.replace('$COMPONENT_NAME$', name)
