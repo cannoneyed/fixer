@@ -8,21 +8,13 @@ const autoprefixer = require('autoprefixer')
 const nodeEnv = process.env.NODE_ENV || 'development'
 const isProduction = nodeEnv === 'production'
 
-const jsSourcePath = path.join(__dirname, './source')
+const injectSourcePath = path.join(__dirname, './inject')
 const buildPath = path.join(__dirname, './build')
 const imgPath = path.join(__dirname, './source/assets/img')
 const sourcePath = path.join(__dirname, './source')
 
 // Common plugins
 const plugins = [
-    new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'vendor-[hash].js',
-        minChunks(module) {
-            const context = module.context
-            return context && context.indexOf('node_modules') >= 0
-        },
-    }),
     new webpack.DefinePlugin({
         'process.env': {
             NODE_ENV: JSON.stringify(nodeEnv),
@@ -84,7 +76,7 @@ if (isProduction) {
             comments: false,
         },
     }),
-    new ExtractTextPlugin('style-[hash].css')
+    new ExtractTextPlugin('style.css')
   )
 
   // Production rules
@@ -126,14 +118,13 @@ if (isProduction) {
 
 module.exports = {
     devtool: isProduction ? false : 'source-map',
-    context: jsSourcePath,
     entry: {
-        js: './index.js',
+        inject: `${ injectSourcePath }/index.js`,
     },
     output: {
         path: buildPath,
         publicPath: '/',
-        filename: 'app-[hash].js',
+        filename: '[name].js',
     },
     module: {
         rules,
@@ -142,7 +133,7 @@ module.exports = {
         extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
         modules: [
             path.resolve(__dirname, 'node_modules'),
-            jsSourcePath,
+            injectSourcePath,
         ],
     },
     plugins,
