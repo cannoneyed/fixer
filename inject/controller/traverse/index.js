@@ -1,8 +1,7 @@
-import { each } from 'lodash'
 import findReact from './find-react'
 
-export default function traverseReactDOM(rootSelector) {
-    const rootElement = document.querySelector(rootSelector)
+export default function traverseReactDOM() {
+    const rootElement = document.querySelector(this.rootSelector)
     const all = rootElement.getElementsByTagName('*')
 
     const instances = new WeakMap()
@@ -10,41 +9,40 @@ export default function traverseReactDOM(rootSelector) {
 
     // Traverse over each element, selecting the React component instance for the element and
     // processing it into a map of react components
-    each(all, element => {
-        const component = findReact(element)
+    for (let index in all) { // eslint-disable-line
+        const element = all[index]
+        const instance = findReact(element)
 
-        if (component === null || instances.has(component)) {
-            return
+        if (instance === null || instances.has(instance)) {
+            continue // eslint-disable-line
         }
 
-        let name = component.constructor.name || component.constructor.displayName
+        let name = instance.constructor.name || instance.constructor.displayName
+        const { props, source } = instance
 
-        const { props, _source } = component
 
-        if (!_source) {
-            return
+        if (!source) {
+            continue // eslint-disable-line
         }
+        const { fileName } = source
 
         if (name === 'StatelessComponent') {
-            const { rootDirName } = window.__testTackle
-            name = _source.fileName
-                .replace(`${ rootDirName }/`, '')
+            name = fileName
+                .replace(`${ this.rootDirName }/`, '')
                 .replace(/\/index.jsx?/, '')
         }
 
-        const { fileName } = _source
-
-        instances.set(component, true)
+        instances.set(instance, true)
 
         components[fileName] = components[fileName] || []
         components[fileName].push({
-            component,
+            instance,
             name,
             element,
             props,
-            _source,
+            source,
         })
-    })
+    }
 
     return components
 }

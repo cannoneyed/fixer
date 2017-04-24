@@ -1,13 +1,24 @@
 import React, { Component } from 'react'
+import { observer } from 'mobx-react'
+
+// import Components from './Components'
+import GetComponents from './GetComponents'
+import controller from '../controller'
 
 import styles from './styles.css'
 
+@observer
 export default class View extends Component {
     render() {
-        console.log('🍕 heyeyeye', styles.appContainer)
+        const { areComponentsLoaded } = controller
+
         return (
             <div className={ styles.appContainer }>
-                <h1>FUCK YOU</h1>
+                { areComponentsLoaded ? (
+                    <span>Loaded</span>
+                ) : (
+                    <GetComponents />
+                )}
             </div>
         )
     }

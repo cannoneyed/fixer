@@ -36,17 +36,15 @@ export const processPage = async function (params) {
     }
 
     await browser
-        .inject('css', getInjectPath('style.css'))
-        .inject('js', getInjectPath('inject.js'))
-        // .evaluate((_init) => {
-        //     window.gutsyController.initialize(_init)
-        // }, init)
-        // .wait('#gutsyGetComponentStart')
-    //
-    // // await browser
-    // //     .inject('js', getInjectPath('execute.js'))
-    // //     .wait('#testTackleGenerateStart')
-    //
+        .inject('css', getInjectPath('styles.css'))
+        // .inject('js', getInjectPath('inject.js'))
+        .evaluate((_init) => {
+            window.gutsyController.initialize(_init)
+        }, init)
+        .wait(() => {
+            return window.gutsyController.areComponentsLoaded()
+        })
+
     // const output = await browser
     //     .evaluate(() => {
     //         return window.__testTackle.output

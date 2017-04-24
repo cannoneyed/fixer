@@ -1,9 +1,28 @@
 import { map } from 'lodash'
+import { observable } from 'mobx'
+
+import ComponentModel from './models/component'
 
 import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
 class GutsyController {
+    @observable components = []
+    @observable fixtures = []
+    @observable areComponentsLoaded = false
+
+    addComponent = (component) => {
+        this.components.push(new ComponentModel(component))
+    }
+
+    addFixture = (fixture) => {
+        // this.components.push(new FixtureModel(fixture))
+    }
+
+    // Externally defined methods
+    traverseReactDOM = traverseReactDOM
+    generateTestJSON = generateTestJSON
+
     initialize = (params) => {
         const {
             rootSelector,
@@ -16,10 +35,20 @@ class GutsyController {
         this.fnPlaceholder = fnPlaceholder
         this.reactElementPlaceholder = reactElementPlaceholder
         this.rootDirName = rootDirName
+
+        console.log('🌵 gutsy inititalized 🌵')
     }
 
-    loadComponents = () => {
-        this.components = traverseReactDOM(this.rootSelector)
+    getComponents = () => {
+        const components = this.traverseReactDOM()
+        map(components, (instances) => {
+            map(instances, instance => {
+                this.addComponent(instance)
+            })
+        })
+
+        this.areComponentsLoaded = true
+        console.log('🌵 components loaded 🌵')
     }
 
     generateFixures = () => {
@@ -29,11 +58,12 @@ class GutsyController {
 
             fixtures[key] = {
                 name: component.name,
-                json: generateTestJSON(component.props),
+                json: this.generateTestJSON(component.props),
                 filename: key,
             }
         })
     }
 }
 
-export default new GutsyController()
+const gutsyController = new GutsyController()
+export default gutsyController

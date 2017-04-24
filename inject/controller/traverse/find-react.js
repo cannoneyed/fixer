@@ -1,20 +1,18 @@
-import { map } from 'lodash'
-
 export default function findReact(domElement) {
-    map(domElement, (value, key) => {
+    for (let key in domElement) { // eslint-disable-line
         if (key.startsWith('__reactInternalInstance$')) {
-            const compInternals = value._currentElement
+            const compInternals = domElement[key]._currentElement
 
             // Get the source code file and line numbers from the internals
             const { _source } = compInternals
 
             const compWrapper = compInternals._owner
-            const comp = compWrapper._instance
+            const instance = compWrapper._instance
 
             // Attach the source code file and line numbers to the instance
-            comp._source = _source
-            return comp
+            instance.source = _source
+            return instance
         }
-        return null
-    })
+    }
+    return null
 }

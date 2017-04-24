@@ -10,6 +10,6 @@ export default {
         mode: 'detach',
     },
     waitTimeout: 1000 * 60 * 15, // 15 minute timeout to set up gen,
-    width: 1200,
-    height: 1200,
+    width: 400,
+    height: 400,
 }

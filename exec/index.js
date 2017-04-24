@@ -6,12 +6,11 @@ program
     .arguments('<url>')
     .option('-p, --page <page>', 'The name of the page to generate tests for')
     .option('-r, --root <rootSelector>', 'The root selector to find components from')
-    .action((url) => {
-        const { page, rootSelector } = program
+    .action((url, options) => {
         return processPage({
             url,
-            page,
-            rootSelector,
+            page: options.page,
+            rootSelector: options.root,
         })
     })
     .parse(process.argv)

@@ -1,8 +1,7 @@
 {
   "plugins": [
-    "transform-class-properties",
-    "syntax-decorators",
     "transform-decorators-legacy",
+    "transform-class-properties",
     ["transform-runtime", {
       "polyfill": false,
       "regenerator": true
@@ -15,12 +14,5 @@
     "es2015",
     "react",
     "stage-0"
-  ],
-  "env": {
-    "development": {
-      "presets": [
-        "react-hmre"
-      ]
-    }
-  }
+  ]
 }

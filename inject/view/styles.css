@@ -1,6 +1,6 @@
 .appContainer {
     position: fixed;
-    z-index: 99999999;
+    z-index: 99999;
     top: 20px;
     left: 20px;
     padding: 5px;

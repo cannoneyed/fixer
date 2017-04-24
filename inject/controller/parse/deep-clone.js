@@ -1,4 +1,4 @@
-import { map } from 'lodash'
+import map from 'lodash.map'
 import { isReactElementOrElements } from './is-react-element'
 
 export default function deepClone(obj, hash = new WeakMap()) {
@@ -11,7 +11,7 @@ export default function deepClone(obj, hash = new WeakMap()) {
     }
 
     if (isReactElementOrElements(obj)) {
-        const placeholder = window.__testTackle.reactElementPlaceholder
+        const placeholder = this.reactElementPlaceholder
         return obj instanceof Array ? obj.map(() => placeholder) : placeholder
     }
 
