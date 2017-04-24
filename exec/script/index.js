@@ -12,9 +12,15 @@ import {
 import { getInjectPath, getNameFromFile } from './helpers'
 import defaultNightmareOptions from './nightmare-options'
 
+const writeFile = (path, file) => {
+    const wstream = fs.createWriteStream(path)
+    wstream.write(file)
+    wstream.end()
+}
+
 export const processPage = async function (params) {
     const {
-        page = 'app',
+        pageName,
         rootSelector = 'body',
         url,
         nightmareOptions,
@@ -33,60 +39,73 @@ export const processPage = async function (params) {
         fnPlaceholder,
         reactElementPlaceholder,
         rootDirName: process.cwd(),
+        pageName,
     }
 
+    const scriptString = fs.readFileSync(getInjectPath('inject.js'), {
+        encoding: 'utf8',
+    })
+
     await browser
-        .inject('css', getInjectPath('styles.css'))
-        // .inject('js', getInjectPath('inject.js'))
-        .evaluate((_init) => {
+        .evaluate((_scriptString, _init) => {
+            // Append and execute the script
+            const script = document.createElement('script')
+            script.setAttribute('type', 'text/javascript')
+            script.appendChild(document.createTextNode(_scriptString))
+            const body = document.querySelector('body')
+            body.appendChild(script)
+
+            // Initialize gutsy
             window.gutsyController.initialize(_init)
-        }, init)
+        }, scriptString, init)
         .wait(() => {
-            return window.gutsyController.areComponentsLoaded()
+            return window.gutsyController.areFixturesGenerated
         })
 
-    // const output = await browser
-    //     .evaluate(() => {
-    //         return window.__testTackle.output
-    //     })
-    //
-    // const written = []
-    // map(output.fixtures, item => {
-    //     const { json, filename } = item
-    //
-    //     const fileComponentName = getNameFromFile(filename)
-    //
-    //     const fixtureFile = processFixture(json, page)
-    //     const testFile = processTest(fileComponentName, page)
-    //
-    //     // If the test fixture already exists, don't write one
-    //     const dirname = filename.replace(/\/index.jsx?/, '')
-    //     const fixturePath = `${ dirname }/fixture.auto.js`
-    //     const testPath = `${ dirname }/auto.test.js`
-    //     // if (fs.existsSync(fixturePath) || fs.existsSync(testPath)) {
-    //     //     return
-    //     // }
-    //
-    //     if (testPath.indexOf('app/components/Pager/auto.test.js') === -1) {
-    //         return
-    //     }
-    //
-    //     const writeFile = (path, file) => {
-    //         const wstream = fs.createWriteStream(path)
-    //         wstream.write(file)
-    //         wstream.end()
-    //     }
-    //
-    //     writeFile(fixturePath, fixtureFile)
-    //     writeFile(testPath, testFile)
-    //
-    //     written.push(fileComponentName)
-    // })
-    //
-    // console.log(`Wrote ${ written.length } test${ written.length === 1 ? '' : 's' }`)
-    // console.log(written)
+    const output = await browser
+        .evaluate(() => {
+            return {
+                fixtures: window.gutsyController.fixtures,
+                pageName: window.gutsyController.config.pageName,
+            }
+        })
 
-    await P.delay(100000)
+    console.log('🐸', 'generating fixtures....')
+    const written = []
+
+    map(output.fixtures, (fixtures, fileName) => {
+        map(fixtures, (fixture, fixtureName) => {
+            const { json, } = fixture
+            const { fixturePageName } = output
+
+            const fileComponentName = getNameFromFile(fileName)
+
+            const fixtureFile = processFixture(json, fixturePageName)
+            const testFile = processTest(fileComponentName, fixturePageName, fixtureName)
+
+            // If the test fixture already exists, don't write one
+            const dirname = fileName.replace(/\/index.jsx?/, '')
+            const fixturePath = `${ dirname }/auto-fixtures/fixture.auto.${ fixtureName }.js`
+            const testPath = `${ dirname }/auto.test.js`
+            if (fs.existsSync(fixturePath) || fs.existsSync(testPath)) {
+                return
+            }
+
+
+            writeFile(fixturePath, fixtureFile)
+            // writeFile(testPath, testFile)
+            //
+            written.push(fileComponentName)
+            written.push(true)
+        })
+    })
+
+
+
+    console.log(`Wrote ${ written.length } test${ written.length === 1 ? '' : 's' }`)
+    console.log(written)
+
+    await P.delay(120000)
 
     await browser.end()
 }

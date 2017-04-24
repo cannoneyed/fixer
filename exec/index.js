@@ -1,4 +1,6 @@
 #! /usr/bin/env node
+/* eslint-disable import/first */
+import 'babel-polyfill'
 import program from 'commander'
 import { processPage } from './script'
 
@@ -9,7 +11,7 @@ program
     .action((url, options) => {
         return processPage({
             url,
-            page: options.page,
+            pageName: options.page,
             rootSelector: options.root,
         })
     })

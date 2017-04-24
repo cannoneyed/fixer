@@ -12,8 +12,8 @@ export const getInjectPath = (name) => {
     return getRootFilePath(`build/${ name }`)
 }
 
-export const getNameFromFile = (rootDirName, filename) => {
+export const getNameFromFile = (filename) => {
     return filename
-        .replace(`${ rootDirName }/`, '')
+        .replace(`${ process.cwd() }/`, '')
         .replace(/\/index.jsx?/, '')
 }

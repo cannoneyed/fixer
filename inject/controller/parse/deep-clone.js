@@ -7,11 +7,11 @@ export default function deepClone(obj, hash = new WeakMap()) {
     }
 
     if (typeof obj === 'function') {
-        return window.__testTackle.fnPlaceholder
+        return this.config.fnPlaceholder
     }
 
     if (isReactElementOrElements(obj)) {
-        const placeholder = this.reactElementPlaceholder
+        const placeholder = this.config.reactElementPlaceholder
         return obj instanceof Array ? obj.map(() => placeholder) : placeholder
     }
 
@@ -34,7 +34,7 @@ export default function deepClone(obj, hash = new WeakMap()) {
             return undefined
         }
         return {
-            [key]: deepClone(val, hash),
+            [key]: deepClone.call(this, val, hash),
         }
     }).filter(val => val !== undefined)
     return Object.assign(result, ...output)

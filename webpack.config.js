@@ -32,7 +32,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'),
+                loader: 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
                 include: path.resolve(__dirname, './inject'),
             },
         ],
@@ -44,6 +44,6 @@ module.exports = {
             },
             'global': {}, // mobx workaround
         }),
-        new ExtractTextPlugin('styles.css'),
+        // new ExtractTextPlugin('styles.css'),
     ],
 }

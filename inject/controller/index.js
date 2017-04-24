@@ -7,61 +7,61 @@ import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
 class GutsyController {
-    @observable components = []
-    @observable fixtures = []
+    fixtures = {}
+    @observable config = null
+    @observable components = {}
     @observable areComponentsLoaded = false
-
-    addComponent = (component) => {
-        this.components.push(new ComponentModel(component))
-    }
-
-    addFixture = (fixture) => {
-        // this.components.push(new FixtureModel(fixture))
-    }
+    @observable areFixturesGenerated = false
 
     // Externally defined methods
     traverseReactDOM = traverseReactDOM
     generateTestJSON = generateTestJSON
 
-    initialize = (params) => {
-        const {
-            rootSelector,
-            fnPlaceholder,
-            reactElementPlaceholder,
-            rootDirName,
-        } = params
+    log = (message) => console.log(`🌵 ${ message } 🌵`)
 
-        this.rootSelector = rootSelector
-        this.fnPlaceholder = fnPlaceholder
-        this.reactElementPlaceholder = reactElementPlaceholder
-        this.rootDirName = rootDirName
-
-        console.log('🌵 gutsy inititalized 🌵')
+    initialize = (config) => {
+        this.config = observable(config)
+        this.log('inititalized')
     }
 
-    getComponents = () => {
-        const components = this.traverseReactDOM()
-        map(components, (instances) => {
-            map(instances, instance => {
-                this.addComponent(instance)
-            })
+    loadComponents = () => {
+        const instances = this.traverseReactDOM()
+
+        // Map the returned instances to a map by component filename
+        const components = {}
+        map(instances, instance => {
+            const { fileName } = instance
+            const component = new ComponentModel(instance)
+            components[fileName] = components[fileName] || []
+            components[fileName].push(component)
         })
 
+        this.components = observable(components)
         this.areComponentsLoaded = true
-        console.log('🌵 components loaded 🌵')
+        this.log('components loaded')
     }
 
-    generateFixures = () => {
-        const fixtures = {}
-        map(this.components, (componentList, key) => {
-            const component = this.components[0]
+    generateFixtures = () => {
+        map(this.components, (instances, fileName) => {
+            const fixtures = {}
 
-            fixtures[key] = {
-                name: component.name,
-                json: this.generateTestJSON(component.props),
-                filename: key,
+            instances
+                .filter(instance => instance.isSelected)
+                .map((instance, index) => { // eslint-disable-line
+                    const instanceName = instance.nameOverride || index
+                    const fixtureName = `${ this.config.pageName }-${ instanceName }`
+                    fixtures[fixtureName] = {
+                        name: instance.name,
+                        json: this.generateTestJSON(instance.props),
+                        fileName,
+                    }
+                })
+            if (Object.keys(fixtures).length) {
+                this.fixtures[fileName] = fixtures
             }
         })
+        this.areFixturesGenerated = true
+        this.log('fixtures generated')
     }
 }
 

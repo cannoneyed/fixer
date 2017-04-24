@@ -2,9 +2,9 @@
   "plugins": [
     "transform-decorators-legacy",
     "transform-class-properties",
-    ["transform-runtime", {
-      "polyfill": false,
-      "regenerator": true
+    ["transform-async-to-module-method", {
+      "module": "bluebird",
+      "method": "coroutine"
     }]
   ],
   "ignore": [

@@ -1,11 +1,11 @@
 import findReact from './find-react'
 
 export default function traverseReactDOM() {
-    const rootElement = document.querySelector(this.rootSelector)
+    const rootElement = document.querySelector(this.config.rootSelector)
     const all = rootElement.getElementsByTagName('*')
 
-    const instances = new WeakMap()
-    const components = {}
+    const instancesMap = new WeakMap()
+    const instances = []
 
     // Traverse over each element, selecting the React component instance for the element and
     // processing it into a map of react components
@@ -13,7 +13,7 @@ export default function traverseReactDOM() {
         const element = all[index]
         const instance = findReact(element)
 
-        if (instance === null || instances.has(instance)) {
+        if (instance === null || instancesMap.has(instance)) {
             continue // eslint-disable-line
         }
 
@@ -28,21 +28,20 @@ export default function traverseReactDOM() {
 
         if (name === 'StatelessComponent') {
             name = fileName
-                .replace(`${ this.rootDirName }/`, '')
+                .replace(`${ this.config.rootDirName }/`, '')
                 .replace(/\/index.jsx?/, '')
         }
 
-        instances.set(instance, true)
+        instancesMap.set(instance, true)
 
-        components[fileName] = components[fileName] || []
-        components[fileName].push({
+        instances.push({
             instance,
             name,
             element,
             props,
-            source,
+            fileName,
         })
     }
 
-    return components
+    return instances
 }

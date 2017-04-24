@@ -40,13 +40,13 @@ export function injectHead(input, page, useReact) {
     return output
 }
 
-export function processFixture(json, page) {
+export function processFixture(json, pageName) {
     let output = json
     const useReact = output.indexOf(reactElementPlaceholder) !== -1
 
     output = replaceFunctionPlaceholders(output)
     output = replaceQuotes(output)
-    output = injectHead(output, page, useReact)
+    output = injectHead(output, pageName, useReact)
 
     return output
 }
