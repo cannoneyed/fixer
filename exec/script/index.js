@@ -27,7 +27,6 @@ export const processPage = async function (params) {
 
     // Go to page and wait to load
     await browser.goto(url)
-        .wait(3000)
 
     const init = {
         rootSelector,
@@ -36,15 +35,13 @@ export const processPage = async function (params) {
         rootDirName: process.cwd(),
     }
 
-    console.log('🔥', getInjectPath('inject.js'))
-
-    // await browser
-    //     .evaluate((_init) => {
-    //         window.gutsyController.initialize(_init)
-    //     }, init)
-    //     .inject('css', getInjectPath('style.css'))
-    //     .inject('js', getInjectPath('app.js'))
-    //     .wait('#gutsyGetComponentStart')
+    await browser
+        .inject('css', getInjectPath('style.css'))
+        .inject('js', getInjectPath('inject.js'))
+        // .evaluate((_init) => {
+        //     window.gutsyController.initialize(_init)
+        // }, init)
+        // .wait('#gutsyGetComponentStart')
     //
     // // await browser
     // //     .inject('js', getInjectPath('execute.js'))
@@ -91,9 +88,7 @@ export const processPage = async function (params) {
     // console.log(`Wrote ${ written.length } test${ written.length === 1 ? '' : 's' }`)
     // console.log(written)
 
-    console.log('🍕', process.cwd())
-
-    await P.delay(1000)
+    await P.delay(100000)
 
     await browser.end()
 }

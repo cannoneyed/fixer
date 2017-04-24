@@ -9,7 +9,7 @@ export const getRootFilePath = (name) => {
 }
 
 export const getInjectPath = (name) => {
-    return getRootFilePath(`injected/${ name }`)
+    return getRootFilePath(`build/${ name }`)
 }
 
 export const getNameFromFile = (rootDirName, filename) => {
