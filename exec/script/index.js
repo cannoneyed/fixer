@@ -60,7 +60,9 @@ export const processPage = async function (params) {
         const status = await browser.wait(() => {
             return !!window.gutsyController.status
         }).evaluate(() => {
-            return window.gutsyController.status
+            const _status = window.gutsyController.status
+            window.gutsyController.status = null
+            return _status
         })
 
         if (status === 'finished') {

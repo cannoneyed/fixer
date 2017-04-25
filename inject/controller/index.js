@@ -64,7 +64,12 @@ class GutsyController {
         })
         this.areFixturesGenerated = true
         this.components = observable({})
+        this.status = 'fixtures_generated'
         this.log('fixtures generated')
+    }
+
+    finish = () => {
+        this.status = 'finished'
     }
 }
 
