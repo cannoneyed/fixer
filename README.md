@@ -23,6 +23,8 @@ $ npm i --save-dev pomello babel-plugin-transform-react-jsx-source
 }
 ```
 
+##### Note: Pomello currently only works with React versions >15.0
+
 Ensure that your app is running (in this example our app is running at http://localhost:3000), and run pomello. The address supplied to pomello is the address that will be opened in the electron browser window.
 ```bash
 $ pomello http://localhost:3000
