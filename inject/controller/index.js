@@ -49,7 +49,7 @@ class GutsyController {
                 .filter(instance => instance.isSelected)
                 .map((instance, index) => { // eslint-disable-line
                     const instanceName = instance.nameOverride || index
-                    const fixtureName = `${ this.config.pageName }-${ instanceName }`
+                    const fixtureName = `${ this.config.pageName }_${ instanceName }`
                     fixtures[fixtureName] = {
                         name: instance.name,
                         json: this.generateTestJSON(instance.props),

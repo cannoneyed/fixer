@@ -1,4 +1,3 @@
-import P from 'bluebird'
 import { map } from 'lodash'
 import fs from 'fs'
 import Nightmare from 'nightmare'
@@ -9,14 +8,12 @@ import {
     reactElementPlaceholder,
 } from './process'
 
-import { getInjectPath, getNameFromFile } from './helpers'
+import {
+    getInjectPath,
+    getNameFromFile,
+    writeFile,
+} from './helpers'
 import defaultNightmareOptions from './nightmare-options'
-
-const writeFile = (path, file) => {
-    const wstream = fs.createWriteStream(path)
-    wstream.write(file)
-    wstream.end()
-}
 
 export const processPage = async function (params) {
     const {
@@ -70,42 +67,41 @@ export const processPage = async function (params) {
             }
         })
 
-    console.log('🐸', 'generating fixtures....')
     const written = []
-
     map(output.fixtures, (fixtures, fileName) => {
+        const count = Object.keys(fixtures).length
+        let round = 0
         map(fixtures, (fixture, fixtureName) => {
-            const { json, } = fixture
-            const { fixturePageName } = output
+            const { json } = fixture
+            const fixturePageName = output.pageName
 
             const fileComponentName = getNameFromFile(fileName)
 
             const fixtureFile = processFixture(json, fixturePageName)
-            const testFile = processTest(fileComponentName, fixturePageName, fixtureName)
 
             // If the test fixture already exists, don't write one
             const dirname = fileName.replace(/\/index.jsx?/, '')
             const fixturePath = `${ dirname }/auto-fixtures/fixture.auto.${ fixtureName }.js`
-            const testPath = `${ dirname }/auto.test.js`
-            if (fs.existsSync(fixturePath) || fs.existsSync(testPath)) {
+
+            writeFile(fixturePath, fixtureFile)
+            written.push(fileComponentName)
+
+            // We'll only be writing thes test file on the last cycle through the group of fixtures
+            round++
+            if (round !== count) {
                 return
             }
 
-
-            writeFile(fixturePath, fixtureFile)
-            // writeFile(testPath, testFile)
-            //
-            written.push(fileComponentName)
-            written.push(true)
+            // Read all fixtures in the directory and generate the auto test file
+            const testFiles = fs.readdirSync(`${ dirname }/auto-fixtures`)
+            const testFile = processTest(fileComponentName, fixturePageName, testFiles)
+            const testPath = `${ dirname }/auto.test.js`
+            writeFile(testPath, testFile)
         })
     })
 
-
-
     console.log(`Wrote ${ written.length } test${ written.length === 1 ? '' : 's' }`)
     console.log(written)
-
-    await P.delay(120000)
 
     await browser.end()
 }
