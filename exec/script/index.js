@@ -52,16 +52,16 @@ export const processPage = async function (params) {
             const body = document.querySelector('body')
             body.appendChild(script)
 
-            // Initialize gutsy
-            window.gutsyController.initialize(_init)
+            // Initialize marmite
+            window.marmiteController.initialize(_init)
         }, scriptString, init)
 
     while (true) { // eslint-disable-line
         const status = await browser.wait(() => {
-            return !!window.gutsyController.status
+            return !!window.marmiteController.status
         }).evaluate(() => {
-            const _status = window.gutsyController.status
-            window.gutsyController.status = null
+            const _status = window.marmiteController.status
+            window.marmiteController.status = null
             return _status
         })
 
@@ -72,8 +72,8 @@ export const processPage = async function (params) {
             const output = await browser
                 .evaluate(() => {
                     return {
-                        fixtures: window.gutsyController.fixtures,
-                        pageName: window.gutsyController.config.pageName,
+                        fixtures: window.marmiteController.fixtures,
+                        pageName: window.marmiteController.config.pageName,
                     }
                 })
 

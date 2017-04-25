@@ -6,7 +6,7 @@ import ComponentModel from './models/component'
 import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
-class GutsyController {
+class MarmiteController {
     status = null
     fixtures = {}
     @observable config = null
@@ -73,5 +73,5 @@ class GutsyController {
     }
 }
 
-const gutsyController = new GutsyController()
-export default gutsyController
+const marmiteController = new MarmiteController()
+export default marmiteController

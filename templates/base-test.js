@@ -1,7 +1,6 @@
-jest.mock('@patreon/analytics-js', () => {})
 import Component from './index'
 
-import { RenderShallow } from 'libs/testing/enzyme-helpers'
+import { shallow } from 'enzyme'
 
 $IMPORTS$
 

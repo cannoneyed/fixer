@@ -11,7 +11,7 @@ try {
     // Render the view controller to DOM
     ReactDOM.render(
         <View />,
-        document.getElementById('gutsyView')
+        document.getElementById('marmiteView')
     )
 } catch (err) {
     console.error(err)

@@ -1,11 +1,11 @@
 {
-  "name": "gutsy",
+  "name": "marmite",
   "version": "0.0.1",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {
-    "gutsy": "lib/index.js"
+    "marmite": "lib/index.js"
   },
   "scripts": {
     "watch": "concurrently --kill-others \"npm run watch:exec\" \"npm run watch:injected\"",
@@ -14,11 +14,7 @@
     "build": "rm -rf ./build && NODE_ENV=\"production\" && npm run build:exec && npm run build:injected",
     "build:exec": "babel exec/index.js --out-file lib/index.js",
     "build:injected": "webpack --progress --colors",
-    "lint-break-on-errors": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx",
-    "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true",
-    "preview": "NODE_ENV=\"production\" webpack-dashboard -t 'Preview Mode - React-Redux Boilerplate' -- webpack-dev-server",
-    "hook-add": "prepush install",
-    "hook-remove": "prepush remove"
+    "lint": "eslint ./source/js ./webpack.config.js -f table --ext .js --ext .jsx || true"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.3",
@@ -82,10 +78,10 @@
     "safe-write-file": "^1.1.2",
     "webpack": "^1.12.14"
   },
-  "description": "Generate react component fixtures and unit tests automatically",
+  "description": "Generate react component fixtures and unit tests automagically",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cannoneyed/gutsy.git"
+    "url": "git+ssh://git@github.com/cannoneyed/marmite.git"
   },
   "keywords": [
     "react",
@@ -95,10 +91,7 @@
   ],
   "author": "cannoneyed",
   "bugs": {
-    "url": "https://github.com/cannoneyed/gutsy/issues"
+    "url": "https://github.com/cannoneyed/marmite/issues"
   },
-  "homepage": "https://github.com/cannoneyed/gutsy#readme",
-  "prepush": [
-    "npm run lint-break-on-errors --silent"
-  ]
+  "homepage": "https://github.com/cannoneyed/marmite#readme",
 }
