@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import map from 'lodash.map'
+import { map } from 'lodash'
 import { observer } from 'mobx-react'
 import { StyleSheet, css } from 'aphrodite'
 

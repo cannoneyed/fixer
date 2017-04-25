@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import map from 'lodash.map'
+import { map, filter } from 'lodash'
 import { observer } from 'mobx-react'
 import { StyleSheet, css } from 'aphrodite'
 
@@ -48,6 +48,19 @@ export default class ComponentListing extends Component {
         })
     }
 
+    renderNumber = () => {
+        const { instances } = this.props
+        const selectedInstances = filter(instances, instance => instance.isSelected).length
+
+        /* eslint-disable prefer-template */
+        return (
+            <span className={ css(selectedInstances ? styles.instancesSelected : null) }>
+                {` (${ selectedInstances ? selectedInstances + ' / ' : '' }${ instances.length })`}
+            </span>
+        )
+        /* eslint-enable */
+    }
+
     render() {
         const { isOpen, isHighlighted, isSelected } = this.state
         const { instances } = this.props
@@ -72,12 +85,13 @@ export default class ComponentListing extends Component {
                         onClick={ this.clickComponentHeader }
                         className={ css(styles.title, isHighlighted && styles.highlighted) }
                     >
-                        { name }{ ` (${ instances.length })` }
+                        { name }
+                        { this.renderNumber() }
                     </span>
-                    { isOpen && map(instances, (instance, index) => {
-                        return <Instance instance={ instance } key={ index } index={ index } />
-                    }) }
                 </span>
+                { isOpen && map(instances, (instance, index) => {
+                    return <Instance instance={ instance } key={ index } index={ index } />
+                }) }
             </div>
         )
     }
@@ -91,7 +105,10 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     highlighted: {
-        color: 'orange',
+        color: '#F96854',
+    },
+    instancesSelected: {
+        color: '#006375',
     },
     title: {
         fontWeight: 'bold',

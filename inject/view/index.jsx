@@ -4,6 +4,7 @@ import { StyleSheet, css } from 'aphrodite'
 
 import ConfigEditor from './ConfigEditor'
 import ComponentList from './ComponentList'
+import Controls from './Controls'
 import LoadComponents from './LoadComponents'
 import GenerateFixtures from './GenerateFixtures'
 import Finish from './Finish'
@@ -18,9 +19,7 @@ export default class View extends Component {
             <div className={ css(styles.appContainer) }>
                 <ConfigEditor />
                 { areComponentsLoaded && <ComponentList /> }
-                <LoadComponents />
-                { areComponentsLoaded && <GenerateFixtures /> }
-                <Finish />
+                <Controls />
             </div>
         )
     }

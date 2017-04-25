@@ -1,4 +1,4 @@
-import map from 'lodash.map'
+import { map } from 'lodash'
 import { isReactElementOrElements } from './is-react-element'
 
 export default function deepClone(obj, hash = new WeakMap()) {
