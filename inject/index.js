@@ -11,7 +11,7 @@ try {
     // Render the view controller to DOM
     ReactDOM.render(
         <View />,
-        document.getElementById('pomelloView')
+        document.getElementById('fixerView')
     )
 } catch (err) {
     console.error(err)

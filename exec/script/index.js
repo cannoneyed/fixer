@@ -51,16 +51,16 @@ export const processPage = async function (params) {
             const body = document.querySelector('body')
             body.appendChild(script)
 
-            // Initialize pomello
-            window.pomelloController.initialize(_init)
+            // Initialize fixer
+            window.fixerController.initialize(_init)
         }, scriptString, init)
 
     while (true) { // eslint-disable-line
         const status = await browser.wait(() => {
-            return !!window.pomelloController.status
+            return !!window.fixerController.status
         }).evaluate(() => {
-            const _status = window.pomelloController.status
-            window.pomelloController.status = null
+            const _status = window.fixerController.status
+            window.fixerController.status = null
             return _status
         })
 
@@ -71,8 +71,8 @@ export const processPage = async function (params) {
             const output = await browser
                 .evaluate(() => {
                     return {
-                        fixtures: window.pomelloController.fixtures,
-                        pageName: window.pomelloController.config.pageName,
+                        fixtures: window.fixerController.fixtures,
+                        pageName: window.fixerController.config.pageName,
                     }
                 })
 

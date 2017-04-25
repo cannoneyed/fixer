@@ -6,7 +6,7 @@ import ComponentModel from './models/component'
 import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
-class PomelloController {
+class FixerController {
     status = null
     fixtures = {}
     @observable config = null
@@ -73,5 +73,5 @@ class PomelloController {
     }
 }
 
-const pomelloController = new PomelloController()
-export default pomelloController
+const fixerController = new FixerController()
+export default fixerController

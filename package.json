@@ -1,11 +1,11 @@
 {
-  "name": "pomello",
+  "name": "fixer",
   "version": "0.0.1",
   "private": false,
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {
-    "pomello": "lib/index.js"
+    "fixer": "lib/index.js"
   },
   "scripts": {
     "watch": "concurrently --kill-others \"npm run watch:exec\" \"npm run watch:injected\"",
@@ -58,7 +58,7 @@
   "description": "Generate react component fixtures and unit tests automagically",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/cannoneyed/pomello.git"
+    "url": "git+ssh://git@github.com/cannoneyed/fixer.git"
   },
   "keywords": [
     "react",
@@ -68,7 +68,7 @@
   ],
   "author": "cannoneyed",
   "bugs": {
-    "url": "https://github.com/cannoneyed/pomello/issues"
+    "url": "https://github.com/cannoneyed/fixer/issues"
   },
-  "homepage": "https://github.com/cannoneyed/pomello#readme"
+  "homepage": "https://github.com/cannoneyed/fixer#readme"
 }
