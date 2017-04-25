@@ -3,7 +3,6 @@ import fs from 'fs'
 import Nightmare from 'nightmare'
 import {
     processFixture,
-    processTest,
     fnPlaceholder,
     reactElementPlaceholder,
 } from './process'
@@ -79,8 +78,6 @@ export const processPage = async function (params) {
 
             const written = []
             map(output.fixtures, (fixtures, fileName) => {
-                const count = Object.keys(fixtures).length
-                let round = 0
                 map(fixtures, (fixture, fixtureName) => {
                     const { json } = fixture
                     const fixturePageName = output.pageName
@@ -95,19 +92,6 @@ export const processPage = async function (params) {
 
                     writeFile(fixturePath, fixtureFile)
                     written.push(fileComponentName)
-
-                    // We'll only be writing thes test file on the last cycle through the group of
-                    // fixtures
-                    round++
-                    if (round !== count) {
-                        return
-                    }
-
-                    // Read all fixtures in the directory and generate the auto test file
-                    const testFiles = fs.readdirSync(`${ dirname }/auto-fixtures`)
-                    const testFile = processTest(fileComponentName, fixturePageName, testFiles)
-                    const testPath = `${ dirname }/auto.test.js`
-                    writeFile(testPath, testFile)
                 })
             })
 
@@ -116,9 +100,3 @@ export const processPage = async function (params) {
         }
     }
 }
-
-// processPage({
-//     url: 'https://www.patreon.com',
-//     page: 'index',
-//     rootSelector: '#reactTargetIndex',
-// })

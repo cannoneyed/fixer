@@ -2,11 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import mkdirp from 'mkdirp'
 
-export const getTemplateFilePath = (name) => {
-    const rootDirName = __dirname.replace('lib/script/helpers', 'templates')
-    return `${ rootDirName }/${ name }`
-}
-
 export const getScriptFilePath = (name) => {
     const rootDirName = __dirname.replace('/helpers', '')
     return `${ rootDirName }/${ name }`
