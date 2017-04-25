@@ -35,6 +35,20 @@ argument | description
 `--root` | The root selector for the element your React app renders to
 `--page` | The name of the page, used for generating the namespaces for fixtures
 
+## Develop
+
+In order to work with and develop pomello, it's useful to symlink to the local pomello repo from your target React app repo. That way you can build the code in watch mode locally and iterate on pomello's functionality
+
+**pomello repo**
+```bash
+$ npm run watch
+```
+
+**target app repo**
+```bash
+$ npm link ../path/to/pomello && pomello http://localhost:3000 --root=#app --page index
+```
+
 ## Changelog
 
 #### 0.0.1
