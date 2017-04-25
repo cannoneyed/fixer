@@ -53,7 +53,7 @@
     "nightmare": "^2.10.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
-    "safe-write-file": "^1.1.2",
+    "safe-write-file": "^1.1.2"
   },
   "description": "Generate react component fixtures and unit tests automagically",
   "repository": {
@@ -70,5 +70,5 @@
   "bugs": {
     "url": "https://github.com/cannoneyed/pomello/issues"
   },
-  "homepage": "https://github.com/cannoneyed/pomello#readme",
+  "homepage": "https://github.com/cannoneyed/pomello#readme"
 }
