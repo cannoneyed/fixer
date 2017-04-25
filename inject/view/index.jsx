@@ -6,6 +6,7 @@ import ConfigEditor from './ConfigEditor'
 import ComponentList from './ComponentList'
 import LoadComponents from './LoadComponents'
 import GenerateFixtures from './GenerateFixtures'
+import Finish from './Finish'
 import controller from '../controller'
 
 @observer
@@ -19,6 +20,7 @@ export default class View extends Component {
                 { areComponentsLoaded && <ComponentList /> }
                 <LoadComponents />
                 { areComponentsLoaded && <GenerateFixtures /> }
+                <Finish />
             </div>
         )
     }

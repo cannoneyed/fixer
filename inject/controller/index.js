@@ -7,11 +7,13 @@ import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
 class GutsyController {
+    status = null
     fixtures = {}
     @observable config = null
     @observable components = {}
     @observable areComponentsLoaded = false
     @observable areFixturesGenerated = false
+
 
     // Externally defined methods
     traverseReactDOM = traverseReactDOM
@@ -61,6 +63,7 @@ class GutsyController {
             }
         })
         this.areFixturesGenerated = true
+        this.components = observable({})
         this.log('fixtures generated')
     }
 }
