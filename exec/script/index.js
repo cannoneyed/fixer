@@ -52,16 +52,16 @@ export const processPage = async function (params) {
             const body = document.querySelector('body')
             body.appendChild(script)
 
-            // Initialize marmite
-            window.marmiteController.initialize(_init)
+            // Initialize pomello
+            window.pomelloController.initialize(_init)
         }, scriptString, init)
 
     while (true) { // eslint-disable-line
         const status = await browser.wait(() => {
-            return !!window.marmiteController.status
+            return !!window.pomelloController.status
         }).evaluate(() => {
-            const _status = window.marmiteController.status
-            window.marmiteController.status = null
+            const _status = window.pomelloController.status
+            window.pomelloController.status = null
             return _status
         })
 
@@ -72,8 +72,8 @@ export const processPage = async function (params) {
             const output = await browser
                 .evaluate(() => {
                     return {
-                        fixtures: window.marmiteController.fixtures,
-                        pageName: window.marmiteController.config.pageName,
+                        fixtures: window.pomelloController.fixtures,
+                        pageName: window.pomelloController.config.pageName,
                     }
                 })
 

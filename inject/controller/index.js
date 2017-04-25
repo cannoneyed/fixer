@@ -6,7 +6,7 @@ import ComponentModel from './models/component'
 import generateTestJSON from './parse'
 import traverseReactDOM from './traverse'
 
-class MarmiteController {
+class PomelloController {
     status = null
     fixtures = {}
     @observable config = null
@@ -73,5 +73,5 @@ class MarmiteController {
     }
 }
 
-const marmiteController = new MarmiteController()
-export default marmiteController
+const pomelloController = new PomelloController()
+export default pomelloController
