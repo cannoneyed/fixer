@@ -89,6 +89,7 @@ export default class ComponentListing extends Component {
                         { this.renderNumber() }
                     </span>
                 </span>
+                { isOpen && <span>{ instances[0].localFileName }</span> }
                 { isOpen && map(instances, (instance, index) => {
                     return <Instance instance={ instance } key={ index } index={ index } />
                 }) }

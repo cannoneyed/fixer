@@ -18,7 +18,12 @@ export default class LoadComponents extends Component {
                         Generate Fixtures
                     </button>
                 ) }
-                <button onClick={ () => controller.generateFixtures() }>
+                { areComponentsLoaded && (
+                    <button onClick={ () => controller.quickSelect() }>
+                        Quick Select
+                    </button>
+                ) }
+                <button onClick={ () => controller.finish() }>
                     Finish
                 </button>
             </div>

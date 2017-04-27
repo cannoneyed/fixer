@@ -95,7 +95,14 @@ export const processPage = async function (params) {
                 })
             })
 
-            console.log(`Wrote ${ written.length } test${ written.length === 1 ? '' : 's' }`)
+            const message = `Wrote ${ written.length } fixture${ written.length === 1 ? '' : 's' }`
+
+            await browser
+                .evaluate((_message) => {
+                    window.fixerController.setMessageFromScript(_message)
+                }, message)
+
+            console.log(message)
             console.log(written)
         }
     }

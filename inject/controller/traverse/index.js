@@ -30,6 +30,8 @@ export default function traverseReactDOM() {
             name = fileName
                 .replace(`${ this.config.rootDirName }/`, '')
                 .replace(/\/index.jsx?/, '')
+                .split('/')
+                .pop()
         }
 
         instancesMap.set(instance, true)
@@ -40,6 +42,7 @@ export default function traverseReactDOM() {
             element,
             props,
             fileName,
+            localFileName: fileName.replace(`${ this.config.rootDirName }/`, ''),
         })
     }
 

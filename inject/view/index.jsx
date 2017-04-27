@@ -5,6 +5,7 @@ import { StyleSheet, css } from 'aphrodite'
 import ConfigEditor from './ConfigEditor'
 import ComponentList from './ComponentList'
 import Controls from './Controls'
+import Messages from './Messages'
 import controller from '../controller'
 
 @observer
@@ -15,6 +16,7 @@ export default class View extends Component {
         return (
             <div className={ css(styles.appContainer) }>
                 <ConfigEditor />
+                <Messages />
                 { areComponentsLoaded && <ComponentList /> }
                 <Controls />
             </div>

@@ -1,5 +1,5 @@
 import { map } from 'lodash'
-import { observable } from 'mobx'
+import { action, observable } from 'mobx'
 
 import ComponentModel from './models/component'
 
@@ -14,6 +14,10 @@ class FixerController {
     @observable areComponentsLoaded = false
     @observable areFixturesGenerated = false
 
+    @observable messageFromScript = null
+    @action setMessageFromScript = (message) => {
+        this.messageFromScript = message
+    }
 
     // Externally defined methods
     traverseReactDOM = traverseReactDOM
@@ -24,6 +28,11 @@ class FixerController {
     initialize = (config) => {
         this.config = observable(config)
         this.log('inititalized')
+    }
+
+    resetComponents = () => {
+        this.components = observable({})
+        this.areComponentsLoaded = false
     }
 
     loadComponents = () => {
@@ -62,10 +71,17 @@ class FixerController {
                 this.fixtures[fileName] = fixtures
             }
         })
-        this.areFixturesGenerated = true
-        this.components = observable({})
+        this.resetComponents()
         this.status = 'fixtures_generated'
         this.log('fixtures generated')
+    }
+
+    quickSelect = () => {
+        // Quickly select only the first instance of every component on the page
+        map(this.components, instances => {
+            map(instances, instance => instance.isSelected = false)
+            instances[0].isSelected = true
+        })
     }
 
     finish = () => {
