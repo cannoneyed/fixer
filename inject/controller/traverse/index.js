@@ -1,8 +1,14 @@
 import findReact from './find-react'
 
 export default function traverseReactDOM() {
-    const rootElement = document.querySelector(this.config.rootSelector)
-    const all = rootElement.getElementsByTagName('*')
+    let rootElement
+    let all
+    try {
+        rootElement = document.querySelector(this.config.rootSelector)
+        all = rootElement.getElementsByTagName('*')
+    } catch (err) {
+        return []
+    }
 
     const instancesMap = new WeakMap()
     const instances = []

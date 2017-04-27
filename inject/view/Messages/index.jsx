@@ -7,11 +7,11 @@ import controller from '../../controller'
 @observer
 export default class Messages extends Component {
     render() {
-        const { messageFromScript } = controller
+        const { message } = controller
 
         return (
             <div className={ css(styles.message) }>
-                { messageFromScript }
+                { message }
             </div>
         )
     }
