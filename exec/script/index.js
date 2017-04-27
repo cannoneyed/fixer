@@ -14,30 +14,18 @@ import {
 } from './helpers'
 import defaultNightmareOptions from './nightmare-options'
 
-export const processPage = async function (params) {
-    const {
-        pageName,
-        rootSelector = 'body',
-        url,
-        nightmareOptions,
-    } = params
-
-    const browser = Nightmare({
-        ...defaultNightmareOptions,
-        ...nightmareOptions,
+const generatePromise = () => {
+    let resolvePromise
+    const promise = new Promise((resolve) => {
+        resolvePromise = resolve
     })
-
-    // Go to page and wait to load
-    await browser.goto(url)
-
-    const init = {
-        rootSelector,
-        fnPlaceholder,
-        reactElementPlaceholder,
-        rootDirName: process.cwd(),
-        pageName,
+    promise.resolve = (toResolve) => {
+        resolvePromise(toResolve)
     }
+    return promise
+}
 
+const injectScript = async function (browser, init) {
     const scriptString = fs.readFileSync(getInjectPath('inject.js'), {
         encoding: 'utf8',
     })
@@ -54,11 +42,66 @@ export const processPage = async function (params) {
             // Initialize fixer
             window.fixerController.initialize(_init)
         }, scriptString, init)
+}
+
+export const processPage = async function (params) {
+    const {
+        pageName,
+        rootSelector = 'body',
+        url,
+        nightmareOptions,
+    } = params
+
+    const browser = Nightmare({
+        ...defaultNightmareOptions,
+        ...nightmareOptions,
+    })
+
+    // Set up our event listeners for reloading the script onto the page on navigation
+    let loadPromise = null
+    browser.on('will-navigate', () => {
+        loadPromise = generatePromise()
+    })
+
+    browser.on('did-finish-load', () => {
+        if (loadPromise) {
+            setTimeout(() => loadPromise.resolve(), 500)
+        }
+    })
+
+    // Go to page and wait to load
+    await browser.goto(url)
+
+    const init = {
+        rootSelector,
+        fnPlaceholder,
+        reactElementPlaceholder,
+        rootDirName: process.cwd(),
+        pageName,
+    }
+
+    await injectScript(browser, init)
 
     while (true) { // eslint-disable-line
+        // When navigating, wait until the new page is loaded before reinjecting the script
+        if (status === 'detached') {
+            await loadPromise
+            await injectScript(browser, init)
+        }
+
         const status = await browser.wait(() => {
-            return !!window.fixerController.status
+            try {
+                return !!window.fixerController.status
+            } catch (err) {
+                // Catch the disconnection error and handle later
+                return true
+            }
         }).evaluate(() => {
+            // If we've left the page the controller no longer exists
+            if (!window.fixerController) {
+                return 'detached'
+            }
+
             const _status = window.fixerController.status
             window.fixerController.status = null
             return _status
