@@ -130,7 +130,7 @@ export const processPage = async function (params) {
                     const fixtureFile = processFixture(json, fixturePageName)
 
                     // If the test fixture already exists, don't write one
-                    const dirname = fileName.replace(/\/index.jsx?/, '')
+                    const dirname = fileName.replace(/\/\w+.jsx?/, '') // replace filename
                     const fixturePath = `${ dirname }/auto-fixtures/fixture.auto.${ fixtureName }.js`
 
                     writeFile(fixturePath, fixtureFile)

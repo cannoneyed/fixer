@@ -35,7 +35,7 @@ export default function traverseReactDOM() {
         if (name === 'StatelessComponent') {
             name = fileName
                 .replace(`${ this.config.rootDirName }/`, '')
-                .replace(/\/index.jsx?/, '')
+                .replace(/\/\w+.jsx?/, '') // Replace filename
                 .split('/')
                 .pop()
         }

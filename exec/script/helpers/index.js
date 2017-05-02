@@ -18,8 +18,8 @@ export const getInjectPath = (name) => {
 
 export const getNameFromFile = (filename) => {
     return filename
-        .replace(`${ process.cwd() }/`, '')
-        .replace(/\/index.jsx?/, '')
+        .replace(`${ process.cwd() }/`, '') // Replace current working directory
+        .replace(/\/\w+.jsx?/, '') // Replace filename
 }
 
 export const writeFile = (filename, file) => {
